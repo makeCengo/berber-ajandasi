@@ -1,4 +1,3 @@
-
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -15,7 +14,6 @@ android {
         versionCode = 1
         versionName = "1.0"
     }
-}
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -25,6 +23,7 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
+}
 
 dependencies {
     implementation("androidx.webkit:webkit:1.12.1")
