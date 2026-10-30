@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#173d35">
+<link rel="manifest" href="./manifest.webmanifest">
+<title>Berber Ajandası</title>
+<style>
+:root{--green:#173d35;--green2:#245b4e;--cream:#f5f3ed;--paper:#fffefa;--ink:#202a26;--muted:#6b7771;--line:#e2e6df;--red:#a33b35;--amber:#9b6719;--shadow:0 6px 22px rgba(27,48,39,.07)}
+*{box-sizing:border-box}body{margin:0;background:var(--cream);color:var(--ink);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:15px}
+header{background:var(--green);color:white;padding:20px 17px 17px;position:sticky;top:0;z-index:3;box-shadow:0 4px 15px #102e2622}
+.headrow{display:flex;align-items:center;justify-content:space-between;gap:10px}.brand{font-weight:800;font-size:21px;letter-spacing:.1px}.sub{font-size:12px;color:#d3e4dc;margin-top:3px}
+.pill{font-size:11px;border:1px solid #ffffff55;border-radius:99px;padding:6px 9px;color:#e6f1eb;white-space:nowrap}
+main{max-width:760px;margin:0 auto;padding:15px 13px 96px}
+.tabs{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;background:#e8e8df;padding:5px;border-radius:14px;margin-bottom:15px}
+.tab{border:0;background:transparent;border-radius:10px;padding:9px 3px;color:#58645e;font-weight:700;font-size:11px;cursor:pointer}
+.tab.active{background:var(--paper);color:var(--green);box-shadow:0 2px 7px #243b2c12}
+.tab .ico{display:block;font-size:18px;margin-bottom:3px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:17px;padding:15px;margin-bottom:13px;box-shadow:var(--shadow)}
+h2{font-size:18px;margin:0 0 12px}h3{font-size:15px;margin:0 0 8px}
+.muted{color:var(--muted)}.small{font-size:12px}.row{display:flex;gap:10px;align-items:center}.between{justify-content:space-between}.grow{flex:1;min-width:0}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:13px}.stat{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:12px 10px}.stat .num{font-size:22px;font-weight:800;color:var(--green)}.stat .lbl{font-size:11px;color:var(--muted);margin-top:3px}
+input,select,textarea{width:100%;border:1px solid #d9dfd7;border-radius:10px;background:#fff;padding:11px 12px;font:inherit;color:var(--ink);outline:none}
+input:focus,select:focus,textarea:focus{border-color:var(--green2);box-shadow:0 0 0 3px #245b4e18}
+label{display:block;font-weight:700;font-size:12px;color:#4b5b53;margin:0 0 6px}
+.field{margin-bottom:12px}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.formgrid .field{margin-bottom:2px}
+button{font:inherit;cursor:pointer}.btn{border:0;border-radius:11px;padding:11px 13px;font-weight:750;background:var(--green);color:white}.btn.secondary{background:#e7eee8;color:var(--green)}.btn.light{background:#f0f1eb;color:#39463f}.btn.danger{background:#f8e8e5;color:var(--red)}.btn.tiny{font-size:12px;padding:7px 9px;border-radius:9px}.btn.full{width:100%}
+.sectionhead{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px}
+.appt{border:1px solid var(--line);border-radius:13px;padding:12px;margin-bottom:9px;background:#fff}.time{font-size:18px;font-weight:850;color:var(--green);min-width:58px}.apptname{font-weight:800;overflow-wrap:anywhere}.meta{font-size:12px;color:var(--muted);margin-top:3px}.badge{font-size:10px;font-weight:800;border-radius:99px;padding:4px 7px;background:#e7eee8;color:var(--green);white-space:nowrap}.badge.done{background:#e4efe0;color:#366b2e}.badge.cancel{background:#f8e8e5;color:var(--red)}.badge.missed{background:#fff0d8;color:#8b5d11}
+.actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.empty{text-align:center;padding:25px 12px;color:var(--muted)}.empty .big{font-size:30px;margin-bottom:8px}
+.notice{padding:11px 12px;border-radius:11px;background:#edf3ed;color:#355648;font-size:12px;line-height:1.45;margin-bottom:12px}.warn{background:#fff1dc;color:#805517}
+hr{border:0;border-top:1px solid var(--line);margin:13px 0}
+.hidden{display:none!important}.money{font-weight:850;color:var(--green)}.customerline{padding:11px 0;border-bottom:1px solid var(--line)}.customerline:last-child{border-bottom:0}
+footer{font-size:11px;text-align:center;color:#7c867f;padding:15px 8px}
+@media(max-width:420px){main{padding:12px 10px 90px}.card{padding:13px}.stats{gap:6px}.stat{padding:10px 8px}.stat .num{font-size:19px}.tab{font-size:10px}.formgrid{gap:8px}.btn{padding:10px 11px}}
+</style>
+</head>
+<body>
+<header><div class="headrow"><div><div class="brand">✂️ Berber Ajandası</div><div class="sub">Randevuların, müşterilerin ve günlük kazancın</div></div><span class="pill">● Çevrimdışı kayıt</span></div></header>
+<main>
+<div class="tabs" role="tablist">
+<button class="tab active" data-tab="today"><span class="ico">🗓️</span>Ajanda</button>
+<button class="tab" data-tab="add"><span class="ico">＋</span>Randevu</button>
+<button class="tab" data-tab="customers"><span class="ico">👤</span>Müşteriler</button>
+<button class="tab" data-tab="income"><span class="ico">₺</span>Kazanç</button>
+<button class="tab" data-tab="backup"><span class="ico">↻</span>Yedek</button>
+</div>
+
+<section id="view-today">
+<div class="stats">
+<div class="stat"><div class="num" id="todayCount">0</div><div class="lbl">Bugünkü randevu</div></div>
+<div class="stat"><div class="num" id="todayDone">0</div><div class="lbl">Tamamlanan</div></div>
+<div class="stat"><div class="num" id="todayMoney">₺0</div><div class="lbl">Bugünkü kazanç</div></div>
+</div>
+<div class="card">
+<div class="sectionhead"><h2 style="margin:0">Günlük ajanda</h2><button class="btn tiny secondary" id="goToday">Bugün</button></div>
+<div class="field"><label for="agendaDate">Tarihi seç</label><input type="date" id="agendaDate"></div>
+<div id="reminderBanner" class="notice hidden"></div>
+<div id="agendaList"></div>
+<button class="btn full" id="addForDate">＋ Bu güne randevu ekle</button>
+</div>
+<div class="notice">WhatsApp'tan gelen randevu talebini buraya kaydet. Kayıtlar bu telefonda saklanır; düzenli yedek almayı unutma.</div>
+</section>
+
+<section id="view-add" class="hidden">
+<div class="card">
+<div class="sectionhead"><h2 id="formTitle">Yeni randevu</h2><button id="clearForm" class="btn tiny light">Temizle</button></div>
+<div class="notice">Randevuyu kaydettikten sonra takvimde görünür. Saat çakışması varsa uygulama uyarır.</div>
+<form id="apptForm">
+<input type="hidden" id="apptId">
+<div class="field"><label for="custName">Müşteri adı *</label><input id="custName" required maxlength="70" placeholder="Örn. Ahmet Yılmaz"></div>
+<div class="formgrid">
+<div class="field"><label for="custPhone">Telefon / WhatsApp</label><input id="custPhone" inputmode="tel" maxlength="25" placeholder="05xx xxx xx xx"></div>
+<div class="field"><label for="service">İşlem</label><select id="service"><option>Saç kesimi</option><option>Sakal tıraşı</option><option>Saç + sakal</option><option>Çocuk tıraşı</option><option>Diğer</option></select></div>
+<div class="field"><label for="apptDate">Tarih *</label><input type="date" id="apptDate" required></div>
+<div class="field"><label for="apptTime">Saat *</label><input type="time" id="apptTime" required step="900"></div>
+<div class="field"><label for="duration">Süre (dakika)</label><select id="duration"><option value="15">15 dakika</option><option value="20">20 dakika</option><option value="30" selected>30 dakika</option><option value="45">45 dakika</option><option value="60">60 dakika</option></select></div>
+<div class="field"><label for="price">Ücret (₺)</label><input type="number" id="price" min="0" step="1" placeholder="Örn. 250"></div>
+</div>
+<div class="field"><label for="notes">Not (isteğe bağlı)</label><textarea id="notes" rows="2" maxlength="300" placeholder="Örn. kısa yanlar, nakit ödeyecek"></textarea></div>
+<button class="btn full" type="submit">Randevuyu kaydet</button>
+</form>
+</div>
+</section>
+
+<section id="view-customers" class="hidden">
+<div class="card"><h2>Müşteri defteri</h2><div class="field"><label for="customerSearch">Müşteri ara</label><input id="customerSearch" placeholder="İsim veya telefon yaz"></div><div id="customerList"></div></div>
+</section>
+
+<section id="view-income" class="hidden">
+<div class="card">
+<h2>Kazanç özeti</h2>
+<div class="field"><label for="incomeMonth">Ay seç</label><input type="month" id="incomeMonth"></div>
+<div class="stats">
+<div class="stat"><div class="num" id="monthIncome">₺0</div><div class="lbl">Tahsil edilen</div></div>
+<div class="stat"><div class="num" id="monthDone">0</div><div class="lbl">Tamamlanan iş</div></div>
+<div class="stat"><div class="num" id="monthBooked">0</div><div class="lbl">Toplam randevu</div></div>
+</div>
+<p class="muted small">Kazanç hesabına yalnızca “Tamamlandı” olarak işaretlenen randevular dahil edilir. Ücret girilmemiş işler ₺0 sayılır.</p>
+<hr><h3>Günlere göre tahsilat</h3><div id="incomeDays"></div>
+</div>
+</section>
+
+<section id="view-backup" class="hidden">
+<div class="card">
+<h2>Veri yedekleme</h2>
+<div class="notice warn"><b>Önemli:</b> Randevular bu cihazın tarayıcısında saklanır. Tarayıcı verilerini temizlemek veya uygulamayı farklı bir tarayıcıda açmak kayıtları kaybettirebilir. Yedek dosyasını düzenli olarak dışa aktar.</div>
+<button class="btn full" id="exportBtn">⬇ Yedeği indir (JSON)</button>
+<div class="field" style="margin-top:13px"><label for="importFile">Daha önce alınmış yedeği geri yükle</label><input type="file" id="importFile" accept=".json,application/json"></div>
+<button class="btn secondary full" id="importBtn">Yedeği geri yükle</button>
+<hr>
+<h3>Hatırlatma ayarı</h3>
+<label for="reminderMinutes">Randevu öncesi uygulama içi uyarı</label>
+<select id="reminderMinutes"><option value="0">Kapalı</option><option value="10">10 dakika önce</option><option value="15">15 dakika önce</option><option value="30" selected>30 dakika önce</option><option value="60">1 saat önce</option></select>
+<p class="muted small">Bu sürümde hatırlatma, uygulama açıkken kontrol edilir. Uygulama kapalıyken kesin saatli bildirim garantisi yoktur.</p>
+<hr>
+<h3>Veri bilgisi</h3><p id="dataInfo" class="muted small"></p>
+<button class="btn danger full" id="wipeBtn">Tüm verileri sil</button>
+</div>
+</section>
+<footer>Berber Ajandası · İlk sürüm · Kişisel kullanım içindir</footer>
+</main>
+<script>
+const KEY='berberAjandasi_v1';
+const $=id=>document.getElementById(id);
+const todayStr=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
+const monthStr=()=>todayStr().slice(0,7);
+const money=n=>'₺'+Number(n||0).toLocaleString('tr-TR',{maximumFractionDigits:2});
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const phoneDigits=s=>String(s||'').replace(/\D/g,'');
+let state={appointments:[],reminderMinutes:30};
+try{const saved=JSON.parse(localStorage.getItem(KEY)||'null');if(saved&&Array.isArray(saved.appointments))state={...state,...saved}}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){alert('Bu tarayıcıda kayıt yapılamadı. Yedek almayı deneyin.')}renderAll()}
+function switchTab(tab){document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));document.querySelectorAll('main section').forEach(s=>s.classList.add('hidden'));$('view-'+tab).classList.remove('hidden');if(tab==='add'&&!$('apptDate').value)$('apptDate').value=$('agendaDate').value||todayStr();if(tab==='customers')renderCustomers();if(tab==='income')renderIncome();if(tab==='backup')renderBackup()}
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>switchTab(b.dataset.tab)));
+function resetForm(date){$('apptForm').reset();$('apptId').value='';$('formTitle').textContent='Yeni randevu';$('apptDate').value=date||$('agendaDate').value||todayStr();$('duration').value='30';}
+$('clearForm').onclick=()=>resetForm($('agendaDate').value);
+$('addForDate').onclick=()=>{resetForm($('agendaDate').value);switchTab('add')};
+$('goToday').onclick=()=>{$('agendaDate').value=todayStr();renderAll()};
+$('agendaDate').value=todayStr();$('apptDate').value=todayStr();$('incomeMonth').value=monthStr();
+$('agendaDate').addEventListener('change',renderAll);
+$('apptForm').addEventListener('submit',e=>{
+ e.preventDefault();
+ const id=$('apptId').value||('a'+Date.now());
+ const a={id,name:$('custName').value.trim(),phone:$('custPhone').value.trim(),service:$('service').value,date:$('apptDate').value,time:$('apptTime').value,duration:Number($('duration').value)||30,price:Number($('price').value)||0,notes:$('notes').value.trim(),status:'booked',createdAt:new Date().toISOString()};
+ if(!a.name||!a.date||!a.time)return alert('Lütfen ad, tarih ve saat alanlarını doldurun.');
+ const existing=state.appointments.find(x=>x.id===id);
+ if(existing)a.status=existing.status;
+ const start=t=>{const [h,m]=t.split(':').map(Number);return h*60+m};
+ const clash=state.appointments.find(x=>x.id!==id&&x.date===a.date&&x.status!=='cancelled'&&start(a.time)<start(x.time)+(Number(x.duration)||30)&&start(a.time)+a.duration>start(x.time));
+ if(clash&&!confirm(`Saat çakışması var: ${clash.time} — ${clash.name}. Yine de kaydedilsin mi?`))return;
+ if(existing){state.appointments=state.appointments.map(x=>x.id===id?a:x)}else state.appointments.push(a);
+ save();$('agendaDate').value=a.date;switchTab('today');alert('Randevu kaydedildi.');
+});
+function editAppt(id){const a=state.appointments.find(x=>x.id===id);if(!a)return;$('apptId').value=a.id;$('custName').value=a.name;$('custPhone').value=a.phone;$('service').value=a.service;$('apptDate').value=a.date;$('apptTime').value=a.time;$('duration').value=String(a.duration||30);$('price').value=a.price||'';$('notes').value=a.notes||'';$('formTitle').textContent='Randevuyu düzenle';switchTab('add')}
+function setStatus(id,status){state.appointments=state.appointments.map(a=>a.id===id?{...a,status}:a);save()}
+function deleteAppt(id){if(confirm('Bu randevu silinsin mi?')){state.appointments=state.appointments.filter(a=>a.id!==id);save()}}
+function waLink(a){let p=phoneDigits(a.phone);if(p.startsWith('0'))p='90'+p.slice(1);else if(p.startsWith('5')&&p.length===10)p='90'+p;const msg=`Merhaba ${a.name}, ${a.date.split('-').reverse().join('.')} tarihinde saat ${a.time} için randevunuzu hatırlatmak isterim. Görüşmek üzere.`;return p.length>=10?`https://wa.me/${p}?text=${encodeURIComponent(msg)}`:`https://wa.me/?text=${encodeURIComponent(msg)}`}
+function renderAgenda(){
+ const date=$('agendaDate').value||todayStr();const arr=state.appointments.filter(a=>a.date===date).sort((a,b)=>a.time.localeCompare(b.time));
+ $('todayCount').textContent=arr.filter(a=>a.status!=='cancelled').length;$('todayDone').textContent=arr.filter(a=>a.status==='done').length;$('todayMoney').textContent=money(arr.filter(a=>a.status==='done').reduce((s,a)=>s+(Number(a.price)||0),0));
+ const now=new Date();const currentDate=todayStr();const due=state.reminderMinutes>0&&date===currentDate?arr.filter(a=>a.status==='booked'&&((new Date(`${a.date}T${a.time}:00`)-now)/60000)>=0&&((new Date(`${a.date}T${a.time}:00`)-now)/60000)<=state.reminderMinutes):[];
+ $('reminderBanner').classList.toggle('hidden',!due.length);$('reminderBanner').innerHTML=due.length?`⏰ <b>Yaklaşan randevu:</b> ${due.map(a=>`${esc(a.time)} ${esc(a.name)}`).join(' · ')}`:'';
+ if(!arr.length){$('agendaList').innerHTML='<div class="empty"><div class="big">🗓️</div>Bu gün için kayıtlı randevu yok.</div>';return}
+ $('agendaList').innerHTML=arr.map(a=>`<div class="appt"><div class="row" style="align-items:flex-start"><div class="time">${esc(a.time)}</div><div class="grow"><div class="row between"><div class="apptname">${esc(a.name)}</div><span class="badge ${a.status==='done'?'done':a.status==='cancelled'?'cancel':''}">${a.status==='done'?'Tamamlandı':a.status==='cancelled'?'İptal':'Bekliyor'}</span></div><div class="meta">${esc(a.service)} · ${a.duration||30} dk · ${money(a.price)}</div>${a.phone?`<div class="meta">☎ ${esc(a.phone)}</div>`:''}${a.notes?`<div class="meta">Not: ${esc(a.notes)}</div>`:''}</div></div><div class="actions">${a.status!=='done'&&a.status!=='cancelled'?`<button class="btn tiny" onclick="setStatus('${a.id}','done')">✓ Tamamlandı</button>`:''}${a.phone?`<button class="btn tiny secondary" onclick="location.href='${waLink(a)}'">WhatsApp</button>`:''}<button class="btn tiny light" onclick="editAppt('${a.id}')">Düzenle</button>${a.status!=='cancelled'?`<button class="btn tiny light" onclick="setStatus('${a.id}','cancelled')">İptal</button>`:''}<button class="btn tiny danger" onclick="deleteAppt('${a.id}')">Sil</button></div></div>`).join('');
+}
+function getCustomers(){const map=new Map();state.appointments.forEach(a=>{const key=(a.phone?phoneDigits(a.phone):a.name.toLocaleLowerCase('tr-TR'));if(!map.has(key))map.set(key,{name:a.name,phone:a.phone,appointments:[]});const c=map.get(key);if(a.date>=((c.lastDate)||'')){c.name=a.name||c.name;c.phone=a.phone||c.phone;c.lastDate=a.date}c.appointments.push(a)});return [...map.values()].sort((a,b)=>a.name.localeCompare(b.name,'tr'))}
+function renderCustomers(){const q=$('customerSearch').value.trim().toLocaleLowerCase('tr-TR');const list=getCustomers().filter(c=>`${c.name} ${c.phone}`.toLocaleLowerCase('tr-TR').includes(q));if(!list.length){$('customerList').innerHTML='<div class="empty">Henüz müşteri kaydı yok.</div>';return}$('customerList').innerHTML=list.map((c,i)=>{const sorted=c.appointments.slice().sort((a,b)=>(b.date+b.time).localeCompare(a.date+a.time));const last=sorted[0];const count=c.appointments.filter(a=>a.status==='done').length;return `<div class="customerline"><div class="row between"><div><b>${esc(c.name)}</b><div class="meta">${esc(c.phone||'Telefon kayıtlı değil')} · ${c.appointments.length} randevu · ${count} tamamlandı</div><div class="meta">Son kayıt: ${last?last.date.split('-').reverse().join('.')+' '+last.time:'—'}</div></div>${c.phone?`<button class="btn tiny secondary" onclick="location.href='https://wa.me/${(()=>{let p=phoneDigits(c.phone);return p.startsWith('0')?'90'+p.slice(1):p.startsWith('5')&&p.length===10?'90'+p:p})()}'">WhatsApp</button>`:''}</div><div class="actions"><button class="btn tiny light" onclick="showCustomerHistory(${i})">Geçmişi gör</button><button class="btn tiny light" onclick="newForCustomer(${i})">Randevu ekle</button></div><div id="history-${i}" class="hidden"></div></div>`}).join('')}
+function showCustomerHistory(i){const c=getCustomers().filter(c=>`${c.name} ${c.phone}`.toLocaleLowerCase('tr-TR').includes($('customerSearch').value.trim().toLocaleLowerCase('tr-TR')))[i];if(!c)return;const el=$('history-'+i);el.classList.toggle('hidden');el.innerHTML=c.appointments.slice().sort((a,b)=>(b.date+b.time).localeCompare(a.date+a.time)).map(a=>`<div class="meta" style="padding:5px 0">${a.date.split('-').reverse().join('.')} ${a.time} · ${esc(a.service)} · ${money(a.price)} · ${a.status==='done'?'Tamamlandı':a.status==='cancelled'?'İptal':'Bekliyor'}</div>`).join('')}
+function newForCustomer(i){const q=$('customerSearch').value.trim().toLocaleLowerCase('tr-TR');const c=getCustomers().filter(c=>`${c.name} ${c.phone}`.toLocaleLowerCase('tr-TR').includes(q))[i];if(!c)return;resetForm(todayStr());$('custName').value=c.name;$('custPhone').value=c.phone||'';switchTab('add')}
+$('customerSearch').addEventListener('input',renderCustomers);
+function renderIncome(){const m=$('incomeMonth').value||monthStr();const arr=state.appointments.filter(a=>a.date.startsWith(m));const done=arr.filter(a=>a.status==='done');$('monthIncome').textContent=money(done.reduce((s,a)=>s+(Number(a.price)||0),0));$('monthDone').textContent=done.length;$('monthBooked').textContent=arr.filter(a=>a.status!=='cancelled').length;const days={};done.forEach(a=>days[a.date]=(days[a.date]||0)+(Number(a.price)||0));const keys=Object.keys(days).sort((a,b)=>b.localeCompare(a));$('incomeDays').innerHTML=keys.length?keys.map(d=>`<div class="row between" style="padding:9px 0;border-bottom:1px solid var(--line)"><span>${d.split('-').reverse().join('.')}</span><b class="money">${money(days[d])}</b></div>`).join(''):'<div class="empty">Bu ay için tamamlanmış randevu yok.</div>'}
+$('incomeMonth').addEventListener('change',renderIncome);
+function renderBackup(){$('reminderMinutes').value=String(state.reminderMinutes??30);$('dataInfo').textContent=`Kayıtlı randevu: ${state.appointments.length} · Müşteri: ${getCustomers().length} · Son yedek hatırlatması: yedek dosyasını cihazın dışında da saklayın.`}
+$('reminderMinutes').addEventListener('change',()=>{state.reminderMinutes=Number($('reminderMinutes').value);save()});
+$('exportBtn').onclick=()=>{const blob=new Blob([JSON.stringify({...state,exportedAt:new Date().toISOString(),formatVersion:1},null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`berber-ajandasi-yedek-${todayStr()}.json`;a.click();URL.revokeObjectURL(url)};
+$('importBtn').onclick=()=>{const f=$('importFile').files[0];if(!f)return alert('Önce yedek JSON dosyasını seçin.');const r=new FileReader();r.onload=()=>{try{const data=JSON.parse(r.result);if(!data||!Array.isArray(data.appointments))throw Error('format');if(!confirm(`${data.appointments.length} randevu yüklenecek. Mevcut kayıtların üzerine yazılsın mı? Önce mevcut veriyi yedeklemek iyi olur.`))return;state={appointments:data.appointments,reminderMinutes:Number(data.reminderMinutes??30)};save();alert('Yedek geri yüklendi.')}catch(e){alert('Yedek dosyası okunamadı veya biçimi geçersiz.')}};r.readAsText(f)};
+$('wipeBtn').onclick=()=>{if(confirm('Bütün randevular ve müşteri geçmişi kalıcı olarak silinsin mi? Önce yedek almanız önerilir.')&&confirm('Son onay: Tüm verileri silmek istediğinizden emin misiniz?')){state={appointments:[],reminderMinutes:30};save();alert('Bu cihazdaki uygulama kayıtları silindi.')}};
+function renderAll(){renderAgenda();if(!$('view-customers').classList.contains('hidden'))renderCustomers();if(!$('view-income').classList.contains('hidden'))renderIncome();if(!$('view-backup').classList.contains('hidden'))renderBackup()}
+renderAll();
+</script>
+<script>if("serviceWorker" in navigator && location.protocol.startsWith("http")){navigator.serviceWorker.register("./service-worker.js").catch(()=>{});}</script>
+</body>
+</html>
