@@ -2,62 +2,49 @@
 package com.berberajandasi.app
 
 import android.app.Activity
-import android.annotation.SuppressLint
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import android.webkit.WebChromeClient
+import android.widget.TextView
+import android.view.ViewGroup
+import android.graphics.Color
+import android.text.TextUtils
 
 class MainActivity : Activity() {
 
-    private lateinit var webView: WebView
-
-    @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        webView = WebView(this)
-        setContentView(webView)
+        try {
+            val webView = WebView(this)
 
-        webView.settings.javaScriptEnabled = true
-        webView.settings.domStorageEnabled = true
-        webView.settings.allowFileAccess = true
-        webView.settings.allowContentAccess = true
+            webView.settings.javaScriptEnabled = true
+            webView.settings.domStorageEnabled = true
+            webView.settings.allowFileAccess = true
 
-        webView.webChromeClient = WebChromeClient()
+            webView.webViewClient = WebViewClient()
+            webView.webChromeClient = WebChromeClient()
 
-        webView.webViewClient = object : WebViewClient() {
-            override fun shouldOverrideUrlLoading(
-                view: WebView,
-                url: String
-            ): Boolean {
-                if (url.startsWith("file:///android_asset/")) {
-                    return false
-                }
+            setContentView(webView)
 
-                if (url.startsWith("https://wa.me/") ||
-                    url.startsWith("whatsapp://")) {
-                    startActivity(
-                        Intent(Intent.ACTION_VIEW, Uri.parse(url))
-                    )
-                    return true
-                }
+            webView.loadUrl(
+                "file:///android_asset/index.html"
+            )
 
-                return true
-            }
-        }
+        } catch (e: Throwable) {
+            val message = TextView(this)
 
-        webView.loadUrl("file:///android_asset/index.html")
-    }
+            message.text = "UYGULAMA HATASI\n\n" +
+                e.javaClass.name + "\n\n" +
+                (e.message ?: "Ayrıntı bulunamadı")
 
-    @Suppress("DEPRECATION")
-    override fun onBackPressed() {
-        if (webView.canGoBack()) {
-            webView.goBack()
-        } else {
-            super.onBackPressed()
+            message.textSize = 16f
+            message.setTextColor(Color.RED)
+            message.setPadding(30, 40, 30, 40)
+            message.setTextIsSelectable(true)
+
+            setContentView(message)
         }
     }
 }
