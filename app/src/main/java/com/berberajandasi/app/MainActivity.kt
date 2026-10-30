@@ -54,7 +54,7 @@ class MainActivity : Activity() {
                 view: WebView?,
                 request: WebResourceRequest?
             ): Boolean {
-                val uri = request.url
+                val uri = request?.url ?: return false
                 val host = uri.host.orEmpty()
 
                 if (host == "appassets.androidplatform.net") return false
