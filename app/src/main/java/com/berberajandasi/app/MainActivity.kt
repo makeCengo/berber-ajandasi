@@ -2,119 +2,111 @@
 package com.berberajandasi.app
 
 import android.app.Activity
-import android.content.ActivityNotFoundException
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.view.ViewGroup
+import android.view.View
+import android.webkit.WebChromeClient
+import android.webkit.WebResourceError
 import android.webkit.WebResourceRequest
 import android.webkit.WebResourceResponse
-import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import android.widget.Toast
+import android.widget.FrameLayout
+import android.widget.TextView
 import androidx.webkit.WebViewAssetLoader
 
 class MainActivity : Activity() {
-    private lateinit var webView: WebView
-    private lateinit var assetLoader: WebViewAssetLoader
 
+    private lateinit var webView: WebView
+    private lateinit var errorView: TextView
+    private var hasError = false
+
+    @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        assetLoader = WebViewAssetLoader.Builder()
+        val layout = FrameLayout(this)
+
+        webView = WebView(this)
+        errorView = TextView(this).apply {
+            textSize = 16f
+            setPadding(32, 32, 32, 32)
+            visibility = View.GONE
+        }
+
+        layout.addView(webView)
+        layout.addView(errorView)
+        setContentView(layout)
+
+        val assetLoader = WebViewAssetLoader.Builder()
             .addPathHandler(
                 "/assets/",
                 WebViewAssetLoader.AssetsPathHandler(this)
             )
             .build()
 
-        webView = WebView(this)
-        webView.layoutParams = ViewGroup.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.MATCH_PARENT
-        )
-
-        webView.settings.apply {
-            javaScriptEnabled = true
-            domStorageEnabled = true
-            cacheMode = WebSettings.LOAD_DEFAULT
-            allowFileAccess = false
-            allowContentAccess = false
-            javaScriptCanOpenWindowsAutomatically = false
-            setSupportMultipleWindows(false)
-        }
+        webView.settings.javaScriptEnabled = true
+        webView.settings.domStorageEnabled = true
+        webView.settings.allowFileAccess = false
+        webView.settings.allowContentAccess = false
+        webView.webChromeClient = WebChromeClient()
 
         webView.webViewClient = object : WebViewClient() {
+
             override fun shouldInterceptRequest(
-                view: WebView?,
-                request: WebResourceRequest?
+                view: WebView,
+                request: WebResourceRequest
             ): WebResourceResponse? {
-                val url = request?.url ?: return null
-                return assetLoader.shouldInterceptRequest(url)
+                return assetLoader.shouldInterceptRequest(request.url)
             }
 
             override fun shouldOverrideUrlLoading(
-                view: WebView?,
-                request: WebResourceRequest?
+                view: WebView,
+                request: WebResourceRequest
             ): Boolean {
-                val uri = request.url
-                val host = uri.host.orEmpty()
-                val isLocalApp =
-                    host == "appassets.androidplatform.net"
+                val url = request.url.toString()
 
-                if (isLocalApp) return false
-
-                if (uri.scheme == "https" &&
-                    (host == "wa.me" ||
-                    host.endsWith(".whatsapp.com") ||
-                    host == "api.whatsapp.com")
-                ) {
-                    return openExternal(uri)
+                if (url.startsWith(
+                    "https://appassets.androidplatform.net/"
+                )) {
+                    return false
                 }
 
-                if (uri.scheme == "tel" || uri.scheme == "mailto") {
-                    return openExternal(uri)
+                if (url.startsWith("https://wa.me/") ||
+                    url.startsWith("whatsapp://")) {
+                    startActivity(
+                        Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                    )
                 }
 
-                Toast.makeText(
-                    this@MainActivity,
-                    "Bu bağlantı uygulama dışında açılacak.",
-                    Toast.LENGTH_SHORT
-                ).show()
+                return true
+            }
 
-                return openExternal(uri)
+            override fun onReceivedError(
+                view: WebView,
+                request: WebResourceRequest,
+                error: WebResourceError
+            ) {
+                if (request.isForMainFrame) {
+                    hasError = true
+                    errorView.visibility = View.VISIBLE
+                    errorView.text =
+                        "Sayfa yüklenemedi.\n\nHata: ${error.description}\nKod: ${error.errorCode}"
+                }
+            }
+
+            override fun onPageFinished(view: WebView, url: String) {
+                if (!hasError) {
+                    errorView.visibility = View.GONE
+                }
             }
         }
 
-        setContentView(webView)
-
-        if (savedInstanceState == null) {
-            webView.loadUrl(
-                "https://appassets.androidplatform.net/assets/index.html"
-            )
-        } else {
-            webView.restoreState(savedInstanceState)
-        }
-    }
-
-    private fun openExternal(uri: Uri): Boolean {
-        return try {
-            startActivity(Intent(Intent.ACTION_VIEW, uri))
-            true
-        } catch (_: ActivityNotFoundException) {
-            Toast.makeText(
-                this,
-                "Bu bağlantıyı açacak uygulama bulunamadı.",
-                Toast.LENGTH_LONG
-            ).show()
-            true
-        }
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        webView.saveState(outState)
-        super.onSaveInstanceState(outState)
+        webView.loadUrl(
+            "https://appassets.androidplatform.net/assets/index.html"
+        )
     }
 
     @Suppress("DEPRECATION")
@@ -124,10 +116,5 @@ class MainActivity : Activity() {
         } else {
             super.onBackPressed()
         }
-    }
-
-    override fun onDestroy() {
-        if (::webView.isInitialized) webView.destroy()
-        super.onDestroy()
     }
 }
