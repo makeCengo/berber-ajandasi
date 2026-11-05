@@ -1,3 +1,4 @@
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -11,8 +12,24 @@ android {
         applicationId = "com.berberajandasi.app"
         minSdk = 23
         targetSdk = 35
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 2
+        versionName = "1.1"
+    }
+
+    signingConfigs {
+        create("release") {
+            storeFile = rootProject.file("app/berber-ajandasi.jks")
+            storePassword = System.getenv("KEYSTORE_PASSWORD")
+            keyAlias = "berber-ajandasi"
+            keyPassword = System.getenv("KEYSTORE_PASSWORD")
+        }
+    }
+
+    buildTypes {
+        getByName("release") {
+            signingConfig = signingConfigs.getByName("release")
+            isMinifyEnabled = false
+        }
     }
 
     compileOptions {
