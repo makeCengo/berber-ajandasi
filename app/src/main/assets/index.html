@@ -196,8 +196,58 @@ function renderIncome(){const m=$('incomeMonth').value||monthStr();const arr=sta
 $('incomeMonth').addEventListener('change',renderIncome);
 function renderBackup(){$('reminderMinutes').value=String(state.reminderMinutes??30);$('dataInfo').textContent=`Kayıtlı randevu: ${state.appointments.length} · Müşteri: ${getCustomers().length} · Son yedek hatırlatması: yedek dosyasını cihazın dışında da saklayın.`}
 $('reminderMinutes').addEventListener('change',()=>{state.reminderMinutes=Number($('reminderMinutes').value);save()});
-$('exportBtn').onclick=()=>{const blob=new Blob([JSON.stringify({...state,exportedAt:new Date().toISOString(),formatVersion:1},null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`berber-ajandasi-yedek-${todayStr()}.json`;a.click();URL.revokeObjectURL(url)};
-$('importBtn').onclick=()=>{const f=$('importFile').files[0];if(!f)return alert('Önce yedek JSON dosyasını seçin.');const r=new FileReader();r.onload=()=>{try{const data=JSON.parse(r.result);if(!data||!Array.isArray(data.appointments))throw Error('format');if(!confirm(`${data.appointments.length} randevu yüklenecek. Mevcut kayıtların üzerine yazılsın mı? Önce mevcut veriyi yedeklemek iyi olur.`))return;state={appointments:data.appointments,reminderMinutes:Number(data.reminderMinutes??30)};save();alert('Yedek geri yüklendi.')}catch(e){alert('Yedek dosyası okunamadı veya biçimi geçersiz.')}};r.readAsText(f)};
+
+$('exportBtn').onclick = () => {
+    try {
+        const backup = JSON.stringify({
+            ...state,
+            exportedAt: new Date().toISOString(),
+            formatVersion: 1
+        }, null, 2);
+
+        if (window.Android && Android.saveBackup) {
+            Android.saveBackup(backup);
+        } else {
+            alert('Android yedekleme bağlantısı bulunamadı.');
+        }
+    } catch (e) {
+        alert('Yedek oluşturulamadı.');
+    }
+};
+
+$('importBtn').onclick = () => {
+    if (window.Android && Android.openBackup) {
+        Android.openBackup();
+    } else {
+        alert('Android geri yükleme bağlantısı bulunamadı.');
+    }
+};
+
+window.onBackupLoaded = (json) => {
+    try {
+        const data = JSON.parse(json);
+
+        if (!data || !Array.isArray(data.appointments)) {
+            throw Error('format');
+        }
+
+        if (!confirm(
+            `${data.appointments.length} randevu yüklenecek. Mevcut kayıtların üzerine yazılsın mı? Önce mevcut veriyi yedeklemek iyi olur.`
+        )) return;
+
+        state = {
+            appointments: data.appointments,
+            reminderMinutes: Number(data.reminderMinutes ?? 30)
+        };
+
+        save();
+        alert('Yedek başarıyla geri yüklendi.');
+
+    } catch (e) {
+        alert('Yedek dosyası okunamadı veya biçimi geçersiz.');
+    }
+};
+
 $('wipeBtn').onclick=()=>{if(confirm('Bütün randevular ve müşteri geçmişi kalıcı olarak silinsin mi? Önce yedek almanız önerilir.')&&confirm('Son onay: Tüm verileri silmek istediğinizden emin misiniz?')){state={appointments:[],reminderMinutes:30};save();alert('Bu cihazdaki uygulama kayıtları silindi.')}};
 function renderAll(){renderAgenda();if(!$('view-customers').classList.contains('hidden'))renderCustomers();if(!$('view-income').classList.contains('hidden'))renderIncome();if(!$('view-backup').classList.contains('hidden'))renderBackup()}
 renderAll();
