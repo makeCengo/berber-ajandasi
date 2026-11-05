@@ -1,3 +1,4 @@
+
 name: Berber Ajandasi APK
 
 on:
@@ -26,12 +27,20 @@ jobs:
         with:
           gradle-version: '8.9'
 
+      - name: Imza anahtarini hazirla
+        env:
+          KEYSTORE_BASE64: ${{ secrets.BERBER_KEYSTORE_BASE64 }}
+        run: |
+          echo "$KEYSTORE_BASE64" | base64 --decode > app/berber-ajandasi.jks
+
       - name: APK derle
-        run: gradle assembleDebug
+        env:
+          KEYSTORE_PASSWORD: ${{ secrets.BERBER_KEYSTORE_PASSWORD }}
+        run: gradle assembleRelease
 
       - name: APK dosyasini yukle
         uses: actions/upload-artifact@v4
         with:
           name: Berber-Ajandasi-APK
-          path: app/build/outputs/apk/debug/*.apk
+          path: app/build/outputs/apk/release/*.apk
           if-no-files-found: error
