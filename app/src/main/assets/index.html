@@ -161,7 +161,7 @@ function waLink(a){
  let p=phoneDigits(a.phone);
  if(p.startsWith('0'))p='90'+p.slice(1);
  else if(p.startsWith('5')&&p.length===10)p='90'+p;
- const msg=`Merhaba ${a.name}, Klas Erkek Berberi'nden hatırlatma: ${a.date.split('-').reverse().join('.')} tarihinde saat ${a.time} için randevunuzu hatırlatmak isterim. Görüşmek üzere.`;
+ const msg=`Merhaba ${a.name}, Klas Erkek Berberi'nden hatırlatma: ${a.date.split('-').reverse().join('.')} tarihinde saat ${a.time} için randevunuz bulunmaktadır. Sizi bekliyoruz. Görüşmek üzere!`;
  return p.length>=10?`https://wa.me/${p}?text=${encodeURIComponent(msg)}`:`https://wa.me/?text=${encodeURIComponent(msg)}`;
  }
  
